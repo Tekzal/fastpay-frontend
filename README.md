@@ -78,4 +78,4 @@ Pull requests are welcome! For major changes, please open an issue first to disc
 [MIT](LICENSE)
 
 ## Contact
-For support or questions, contact the maintainer at [your-email@example.com]. 
+For support or questions, contact the maintainer at clement.quoda@gmail.com. 
