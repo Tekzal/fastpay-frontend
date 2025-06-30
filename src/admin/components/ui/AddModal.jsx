@@ -137,7 +137,7 @@ const AddModal = ({ isOpen, onClose, onSubmit, section }) => {
 
       if (field === 'new_admission' || field === 'status') {
         return (
-          <div key={field} className="col-span-6 sm:col-span-3">
+          <div key={field} className="col-span-1 sm:col-span-2 lg:col-span-3">
             <label className="flex items-center space-x-3">
               <input
                 type="checkbox"
@@ -154,7 +154,7 @@ const AddModal = ({ isOpen, onClose, onSubmit, section }) => {
 
       if (field.includes('date')) {
         return (
-          <div key={field} className="col-span-6 sm:col-span-3">
+          <div key={field} className="col-span-1 sm:col-span-2 lg:col-span-3">
             <label htmlFor={field} className="block text-sm font-medium text-gray-700">
               {label}
             </label>
@@ -164,7 +164,7 @@ const AddModal = ({ isOpen, onClose, onSubmit, section }) => {
               id={field}
               value={formData[field]}
               onChange={handleChange}
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2.5 sm:py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
           </div>
         );
@@ -172,7 +172,7 @@ const AddModal = ({ isOpen, onClose, onSubmit, section }) => {
 
       if (field.includes('amount')) {
         return (
-          <div key={field} className="col-span-6 sm:col-span-3">
+          <div key={field} className="col-span-1 sm:col-span-2 lg:col-span-3">
             <label htmlFor={field} className="block text-sm font-medium text-gray-700">
               {label}
             </label>
@@ -186,7 +186,7 @@ const AddModal = ({ isOpen, onClose, onSubmit, section }) => {
                 id={field}
                 value={formData[field]}
                 onChange={handleChange}
-                className="mt-1 block w-full pl-7 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="mt-1 block w-full pl-7 border border-gray-300 rounded-md shadow-sm py-2.5 sm:py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 placeholder="0.00"
                 step="0.01"
               />
@@ -197,7 +197,7 @@ const AddModal = ({ isOpen, onClose, onSubmit, section }) => {
 
       if (field === 'description' || field === 'notes') {
         return (
-          <div key={field} className="col-span-6">
+          <div key={field} className="col-span-1 sm:col-span-2 lg:col-span-3">
             <label htmlFor={field} className="block text-sm font-medium text-gray-700">
               {label}
             </label>
@@ -207,7 +207,7 @@ const AddModal = ({ isOpen, onClose, onSubmit, section }) => {
               value={formData[field]}
               onChange={handleChange}
               rows={3}
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2.5 sm:py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
           </div>
         );
@@ -215,7 +215,7 @@ const AddModal = ({ isOpen, onClose, onSubmit, section }) => {
 
       if (section === 'Users' && field === 'role') {
         return (
-          <div key={field} className="col-span-6 sm:col-span-3">
+          <div key={field} className="col-span-1 sm:col-span-2 lg:col-span-3">
             <label htmlFor={field} className="block text-sm font-medium text-gray-700">
               Role
             </label>
@@ -224,7 +224,7 @@ const AddModal = ({ isOpen, onClose, onSubmit, section }) => {
               id="role"
               value={formData.role}
               onChange={handleChange}
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2.5 sm:py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             >
               <option value="admin">Admin</option>
               <option value="manager">Manager</option>
@@ -236,7 +236,7 @@ const AddModal = ({ isOpen, onClose, onSubmit, section }) => {
 
       if (section === 'Users' && field === 'is_active') {
         return (
-          <div key={field} className="col-span-6 sm:col-span-3">
+          <div key={field} className="col-span-1 sm:col-span-2 lg:col-span-3">
             <label className="flex items-center space-x-3">
               <input
                 type="checkbox"
@@ -252,7 +252,7 @@ const AddModal = ({ isOpen, onClose, onSubmit, section }) => {
       }
 
       return (
-        <div key={field} className="col-span-6 sm:col-span-3">
+        <div key={field} className="col-span-1 sm:col-span-2 lg:col-span-3">
           <label htmlFor={field} className="block text-sm font-medium text-gray-700">
             {label}
           </label>
@@ -262,7 +262,7 @@ const AddModal = ({ isOpen, onClose, onSubmit, section }) => {
             id={field}
             value={formData[field]}
             onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2.5 sm:py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
       );
@@ -271,12 +271,12 @@ const AddModal = ({ isOpen, onClose, onSubmit, section }) => {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">
+      <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4 max-h-[90vh] overflow-y-auto">
+        <h3 className="text-lg sm:text-xl font-medium text-gray-900 mb-4">
           Add New {section.slice(0, -1)}
         </h3>
         <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-6 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {renderFormFields()}
           </div>
           {error && (
@@ -284,18 +284,18 @@ const AddModal = ({ isOpen, onClose, onSubmit, section }) => {
               {error}
             </div>
           )}
-          <div className="mt-6 flex justify-end space-x-3">
+          <div className="mt-6 flex flex-col sm:flex-row justify-end gap-3 sm:space-x-3">
             <button
               type="button"
               onClick={onClose}
-              className="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="inline-flex justify-center py-2.5 sm:py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 w-full sm:w-auto"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+              className="inline-flex justify-center py-2.5 sm:py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 w-full sm:w-auto"
             >
               {loading ? 'Adding...' : 'Add'}
             </button>

@@ -240,9 +240,14 @@ const DataTable = ({ activeSection, data, onEdit, onDelete, onUpdate }) => {
               <th
                 key={index}
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                {formatHeaderForDisplay(header)}
+                <span className="hidden sm:inline">{formatHeaderForDisplay(header)}</span>
+                <span className="sm:hidden">
+                  {header === 'actions' ? 'Actions' : 
+                   header === 'id' ? 'ID' : 
+                   header.length > 8 ? header.substring(0, 8) + '...' : header}
+                </span>
               </th>
             ))}
           </tr>
@@ -256,8 +261,8 @@ const DataTable = ({ activeSection, data, onEdit, onDelete, onUpdate }) => {
               {headers.map((header, colIndex) => {
                 if (header === 'actions') {
                   return (
-                    <td key={colIndex} className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      <div className="flex items-center space-x-2">
+                    <td key={colIndex} className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <div className="flex items-center space-x-1 sm:space-x-2">
                         <ActionButton
                           icon={PencilIcon}
                           onClick={() => handleEditClick(item, rowIndex)}
@@ -284,7 +289,7 @@ const DataTable = ({ activeSection, data, onEdit, onDelete, onUpdate }) => {
                 return (
                   <td 
                     key={colIndex} 
-                    className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                    className="px-3 sm:px-6 py-4 text-sm text-gray-900"
                     onClick={() => {
                       if (editMode && selectedRow === rowIndex && 
                           header !== 'id' && header !== 'actions' && 
@@ -293,15 +298,17 @@ const DataTable = ({ activeSection, data, onEdit, onDelete, onUpdate }) => {
                       }
                     }}
                   >
-                    <EditableCell
-                      value={value}
-                      header={header}
-                      isEditing={isEditing}
-                      onSave={(newValue) => handleCellSave(rowIndex, header, newValue)}
-                      onCancel={() => {
-                        setEditingCell(null);
-                      }}
-                    />
+                    <div className="sm:whitespace-nowrap">
+                      <EditableCell
+                        value={value}
+                        header={header}
+                        isEditing={isEditing}
+                        onSave={(newValue) => handleCellSave(rowIndex, header, newValue)}
+                        onCancel={() => {
+                          setEditingCell(null);
+                        }}
+                      />
+                    </div>
                   </td>
                 );
               })}

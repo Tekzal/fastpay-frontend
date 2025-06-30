@@ -249,7 +249,7 @@ const StudentPaymentsInterface = () => {
 
     if (loading && !students.length) {
       return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center">
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center px-4">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
             <p className="mt-4 text-gray-600">Loading students...</p>
@@ -260,12 +260,12 @@ const StudentPaymentsInterface = () => {
 
     if (error) {
       return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center">
-          <div className="text-center text-red-600">
-            <p>{error}</p>
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center px-4">
+          <div className="text-center text-red-600 max-w-md">
+            <p className="mb-4">{error}</p>
             <button 
               onClick={() => window.location.reload()} 
-              className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
             >
               Retry
             </button>
@@ -291,9 +291,9 @@ const StudentPaymentsInterface = () => {
             isOpen={isSidebarOpen}
           />
   
-          <main className="flex-1 p-4 md:p-8 overflow-y-auto">
+          <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
             {selectedStudent ? (
-              <>
+              <div className="space-y-6">
                 <TopControls
                   selectedPeriod={selectedPeriod}
                   onPeriodChange={setSelectedPeriod}
@@ -309,22 +309,22 @@ const StudentPaymentsInterface = () => {
                     <p className="mt-4 text-gray-600">Loading fees...</p>
                   </div>
                 ) : (
-                  <>
+                  <div className="space-y-6">
                     <PaymentTypesTable
                       paymentTypes={studentFees}
                       onAddPayment={handleAddPayment}
                       onViewHistory={handleViewHistory}
                     />
                     
-                    <div className="mt-8 w-full lg:w-1/2">
+                    <div className="w-full lg:w-2/3 xl:w-1/2">
                       <TodaysPayments 
                         payments={todaysPayments} 
                         student={selectedStudent} 
                       />
                     </div>
-                  </>
+                  </div>
                 )}
-              </>
+              </div>
             ) : (
               <EmptyState />
             )}

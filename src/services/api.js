@@ -17,12 +17,6 @@ api.interceptors.request.use(
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
-    console.log('API Request:', {
-      method: config.method,
-      url: config.url,
-      params: config.params,
-      data: config.data
-    });
     return config;
   },
   (error) => {
@@ -34,11 +28,6 @@ api.interceptors.request.use(
 // Add response interceptor
 api.interceptors.response.use(
   (response) => {
-    console.log('API Response:', {
-      url: response.config.url,
-      status: response.status,
-      data: response.data
-    });
     return response;
   },
   (error) => {
@@ -655,7 +644,7 @@ export const getPayment = async (paymentId) => {
 // USER CRUD
 export const getUsers = async () => {
   try {
-    const response = await api.get('/users/');
+    const response = await api.get('/auth/users/');
     return response.data;
   } catch (error) {
     console.error('Error fetching users:', error);
@@ -665,7 +654,7 @@ export const getUsers = async () => {
 
 export const getUser = async (userId) => {
   try {
-    const response = await api.get(`/users/${userId}`);
+    const response = await api.get(`/auth/users/${userId}`);
     return response.data;
   } catch (error) {
     console.error('Error fetching user:', error);
@@ -675,7 +664,7 @@ export const getUser = async (userId) => {
 
 export const createUser = async (userData) => {
   try {
-    const response = await api.post('/users/', userData);
+    const response = await api.post('/auth/users/', userData);
     return response.data;
   } catch (error) {
     console.error('Error creating user:', error);
@@ -685,7 +674,7 @@ export const createUser = async (userData) => {
 
 export const updateUser = async (userId, userData) => {
   try {
-    const response = await api.put(`/users/${userId}`, userData);
+    const response = await api.put(`/auth/users/${userId}`, userData);
     return response.data;
   } catch (error) {
     console.error('Error updating user:', error);
@@ -695,7 +684,7 @@ export const updateUser = async (userId, userData) => {
 
 export const deleteUser = async (userId) => {
   try {
-    const response = await api.delete(`/users/${userId}`);
+    const response = await api.delete(`/auth/users/${userId}`);
     return response.data;
   } catch (error) {
     console.error('Error deleting user:', error);
@@ -705,12 +694,55 @@ export const deleteUser = async (userId) => {
 
 export const getCurrentUser = async () => {
   try {
-    const response = await api.get('/users/me');
+    const response = await api.get('/auth/users/me');
     return response.data;
   } catch (error) {
     console.error('Error fetching current user:', error);
     throw error;
   }
+};
+
+// AUTHENTICATION
+export const login = async (username, password) => {
+  try {
+    const formData = new URLSearchParams();
+    formData.append('username', username);
+    formData.append('password', password);
+    
+    const response = await axios.post(`${API_BASE_URL}/auth/login`, formData, {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    });
+    
+    return response.data;
+  } catch (error) {
+    console.error('Error during login:', error);
+    throw error;
+  }
+};
+
+export const logout = () => {
+  // Clear JWT token
+  localStorage.removeItem('jwt_token');
+  
+  // Clear session storage
+  sessionStorage.clear();
+  
+  // Clear any cached data
+  if ('caches' in window) {
+    caches.keys().then(names => {
+      names.forEach(name => {
+        caches.delete(name);
+      });
+    });
+  }
+  
+  // Clear any stored user data
+  localStorage.removeItem('user');
+  localStorage.removeItem('user_role');
+  
+  // Force page reload to clear any in-memory state
+  // This ensures no cached data remains
+  window.location.href = '/login';
 };
 
 export default api; 

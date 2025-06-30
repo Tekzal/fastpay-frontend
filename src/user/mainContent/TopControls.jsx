@@ -4,13 +4,13 @@ import PeriodSelector from './PeriodSelector';
 
 // Top Controls Component
 const TopControls = ({ selectedPeriod, onPeriodChange, onPaymentRequest, periods }) => (
-    <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 gap-4">
       <PeriodSelector selectedPeriod={selectedPeriod} onPeriodChange={onPeriodChange} periods={periods} />
       <button
         onClick={onPaymentRequest}
-        className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 md:px-6 md:py-3 rounded-xl font-semibold hover:shadow-lg transition-all text-sm md:text-base"
+        className="w-full sm:w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-3 sm:px-6 sm:py-3 rounded-xl font-semibold hover:shadow-lg active:scale-95 transition-all text-sm sm:text-base"
       >
-        <Plus size={20} />
+        <Plus size={18} className="sm:w-5 sm:h-5" />
         Add Other Bill
       </button>
     </div>

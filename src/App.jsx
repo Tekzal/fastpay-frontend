@@ -1,87 +1,277 @@
 import React, { useEffect, useState } from 'react'
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import AdminDashboard from './pages/AdminDashboard'
 import StudentPaymentsInterface from './pages/StudentPaymentsInterface'
 import Reports from './pages/Reports'
 import Login from './pages/Login'
 import { getCurrentUser } from './services/api';
 
-function RequireAuth({ children, allowedRoles }) {
-  const location = useLocation();
-  const token = localStorage.getItem('jwt_token');
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (!token) {
-      setLoading(false);
-      return;
-    }
-    getCurrentUser().then(setUser).catch(() => setUser(null)).finally(() => setLoading(false));
-  }, [token]);
-
-  if (!token) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
-  }
-  if (loading) return null;
-  if (!user) return <Navigate to="/login" state={{ from: location }} replace />;
-  if (allowedRoles && !allowedRoles.includes(user.role)) {
-    return <Navigate to="/" replace />;
-  }
-  return React.cloneElement(children, { user });
-}
-
-function TopNav({ user }) {
+// Navigation component with responsive design
+function TopNav({ user, onLogout }) {
   const navigate = useNavigate();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const handleLogout = () => {
+    onLogout();
+    navigate('/login');
+  };
+
+  const getRoleDisplayName = (role) => {
+    switch (role) {
+      case 'admin': return 'Administrator';
+      case 'manager': return 'Manager';
+      case 'cashier': return 'Cashier';
+      default: return role;
+    }
+  };
+
   return (
-    <nav className="flex items-center justify-between px-6 py-3 bg-white shadow border-b">
-      <div className="flex gap-2">
-        <button onClick={() => navigate('/')} className="font-semibold text-gray-700 hover:text-indigo-600 transition">Admin</button>
-        <button onClick={() => navigate('/student')} className="font-semibold text-gray-700 hover:text-indigo-600 transition">Student</button>
-        <button onClick={() => navigate('/reports')} className="font-semibold text-gray-700 hover:text-indigo-600 transition">Reports</button>
+    <nav className="bg-white shadow-lg border-b border-gray-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16">
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-4">
+            {user.role === 'admin' && (
+              <button 
+                onClick={() => navigate('/admin')} 
+                className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50 transition-colors duration-200"
+              >
+                Admin Dashboard
+              </button>
+            )}
+            <button 
+              onClick={() => navigate('/student')} 
+              className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50 transition-colors duration-200"
+            >
+              Student Payments
+            </button>
+            {(user.role === 'admin' || user.role === 'manager') && (
+              <button 
+                onClick={() => navigate('/reports')} 
+                className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50 transition-colors duration-200"
+              >
+                Reports
+              </button>
+            )}
+          </div>
+
+          {/* User Info - Desktop */}
+          <div className="hidden md:flex items-center space-x-4">
+            <div className="text-sm text-gray-600">
+              <span className="font-medium text-gray-900">{user.username}</span>
+              <span className="mx-2">•</span>
+              <span className="text-gray-500">{getRoleDisplayName(user.role)}</span>
+            </div>
+            <button 
+              onClick={handleLogout}
+              className="text-sm text-red-600 hover:text-red-800 font-medium px-3 py-2 rounded-md hover:bg-red-50 transition-colors duration-200"
+            >
+              Logout
+            </button>
+          </div>
+
+          {/* Mobile menu button */}
+          <div className="md:hidden flex items-center">
+            <button
+              onClick={toggleMobileMenu}
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 transition-colors duration-200"
+            >
+              <span className="sr-only">Open main menu</span>
+              {/* Hamburger icon */}
+              <svg
+                className={`${isMobileMenuOpen ? 'hidden' : 'block'} h-6 w-6`}
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+              {/* Close icon */}
+              <svg
+                className={`${isMobileMenuOpen ? 'block' : 'hidden'} h-6 w-6`}
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
       </div>
-      {user && (
-        <div className="text-sm text-gray-500">Logged in as <span className="font-bold text-gray-700">{user.username}</span> ({user.role})</div>
-      )}
+
+      {/* Mobile menu */}
+      <div className={`${isMobileMenuOpen ? 'block' : 'hidden'} md:hidden`}>
+        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gray-50 border-t border-gray-200">
+          {user.role === 'admin' && (
+            <button 
+              onClick={() => {
+                navigate('/admin');
+                setIsMobileMenuOpen(false);
+              }} 
+              className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-100 transition-colors duration-200"
+            >
+              Admin Dashboard
+            </button>
+          )}
+          <button 
+            onClick={() => {
+              navigate('/student');
+              setIsMobileMenuOpen(false);
+            }} 
+            className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-100 transition-colors duration-200"
+          >
+            Student Payments
+          </button>
+          {(user.role === 'admin' || user.role === 'manager') && (
+            <button 
+              onClick={() => {
+                navigate('/reports');
+                setIsMobileMenuOpen(false);
+              }} 
+              className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-100 transition-colors duration-200"
+            >
+              Reports
+            </button>
+          )}
+          
+          {/* Mobile User Info */}
+          <div className="px-3 py-2 border-t border-gray-200">
+            <div className="text-sm text-gray-600 mb-2">
+              <span className="font-medium text-gray-900">{user.username}</span>
+              <span className="mx-2">•</span>
+              <span className="text-gray-500">{getRoleDisplayName(user.role)}</span>
+            </div>
+            <button 
+              onClick={() => {
+                handleLogout();
+                setIsMobileMenuOpen(false);
+              }}
+              className="w-full text-left text-sm text-red-600 hover:text-red-800 font-medium px-3 py-2 rounded-md hover:bg-red-50 transition-colors duration-200"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
     </nav>
   );
 }
 
 function App() {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Check authentication on app load
   useEffect(() => {
-    const token = localStorage.getItem('jwt_token');
-    if (token) {
-      getCurrentUser().then(setUser).catch(() => setUser(null));
-    }
+    const checkAuth = async () => {
+      const token = localStorage.getItem('jwt_token');
+      
+      if (!token) {
+        setUser(null);
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const userData = await getCurrentUser();
+        setUser(userData);
+      } catch (error) {
+        console.error('Authentication check failed:', error);
+        localStorage.removeItem('jwt_token');
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkAuth();
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('jwt_token');
+    setUser(null);
+  };
+
+  // Function to handle successful login
+  const handleLoginSuccess = (userData) => {
+    setUser(userData);
+  };
+
+  // Show loading while checking authentication
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <Router>
-      {user && <TopNav user={user} />}
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/" element={
-          <RequireAuth>
-            <StudentPaymentsInterface user={user} />
-          </RequireAuth>
-        } />
-        <Route path="/admin" element={
-          <RequireAuth allowedRoles={['admin']}>
-            <AdminDashboard user={user} />
-          </RequireAuth>
-        } />
-        <Route path="/student" element={
-          <RequireAuth>
-            <StudentPaymentsInterface user={user} />
-          </RequireAuth>
-        } />
-        <Route path="/reports" element={
-          <RequireAuth allowedRoles={['admin', 'manager']}>
-            <Reports user={user} />
-          </RequireAuth>
-        } />
-      </Routes>
+      <div className="min-h-screen bg-gray-50">
+        {user && <TopNav user={user} onLogout={handleLogout} />}
+        <Routes>
+          {/* Login route */}
+          <Route path="/login" element={
+            user ? <Navigate to="/" replace /> : <Login onLoginSuccess={handleLoginSuccess} />
+          } />
+          
+          {/* Protected routes */}
+          <Route path="/" element={
+            user ? (
+              user.role === 'admin' ? (
+                <AdminDashboard user={user} />
+              ) : (
+                <StudentPaymentsInterface user={user} />
+              )
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          } />
+          
+          {/* Admin Dashboard */}
+          <Route path="/admin" element={
+            user && user.role === 'admin' ? (
+              <AdminDashboard user={user} />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          } />
+          
+          {/* Student Interface */}
+          <Route path="/student" element={
+            user ? (
+              <StudentPaymentsInterface user={user} />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          } />
+          
+          {/* Reports */}
+          <Route path="/reports" element={
+            user && (user.role === 'admin' || user.role === 'manager') ? (
+              <Reports user={user} />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          } />
+
+          {/* Catch all */}
+          <Route path="*" element={
+            user ? <Navigate to="/" replace /> : <Navigate to="/login" replace />
+          } />
+        </Routes>
+      </div>
     </Router>
   )
 }

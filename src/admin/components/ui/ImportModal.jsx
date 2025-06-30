@@ -29,7 +29,7 @@ const ImportModal = ({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={`Import ${activeSection}`}>
-      <div className="space-y-6">
+      <div className="space-y-4 sm:space-y-6 p-4 sm:p-6">
         <div className="bg-gray-50 p-4 rounded-lg">
           <h3 className="font-medium mb-2">Before importing:</h3>
           <ol className="list-decimal list-inside space-y-2 text-sm">
@@ -40,11 +40,11 @@ const ImportModal = ({
         </div>
 
         <div className="flex flex-col gap-4">
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
             <button
               onClick={() => fileInputRef.current?.click()}
               disabled={importing}
-              className="flex-1 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:opacity-50 flex items-center justify-center gap-2"
+              className="flex-1 bg-blue-500 text-white px-4 py-2.5 sm:py-2 rounded hover:bg-blue-600 disabled:opacity-50 flex items-center justify-center gap-2 text-sm"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
@@ -53,7 +53,7 @@ const ImportModal = ({
             </button>
             <button
               onClick={onDownloadTemplate}
-              className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 flex items-center justify-center gap-2"
+              className="bg-green-600 text-white px-4 py-2.5 sm:py-2 rounded hover:bg-green-700 flex items-center justify-center gap-2 text-sm w-full sm:w-auto"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />

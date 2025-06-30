@@ -232,14 +232,15 @@ const MainContent = ({
   };
 
   return (
-    <div className="flex-1 flex flex-col md:ml-64">
+    <div className="flex-1 flex flex-col md:ml-0">
       <TopBar 
         searchTerm={searchTerm} 
         setSearchTerm={setSearchTerm}
         setSidebarOpen={setSidebarOpen}
         onAddNew={handleAddNew}
+        activeSection={activeSection}
       />
-      <div className="flex-1 overflow-auto p-4 bg-gray-50">
+      <div className="flex-1 overflow-auto p-3 sm:p-4 lg:p-6 bg-gray-50">
         <div className="bg-white rounded-lg shadow">
           <DataTable 
             activeSection={activeSection} 
