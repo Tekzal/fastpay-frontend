@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Header from '../user/coreLayout/Header';
+import PageLayout from '../user/coreLayout/PageLayout';
 import StudentSidebar from '../user/coreLayout/StudentSidebar';
 import EmptyState from '../user/coreLayout/EmptyState';
 import TopControls from '../user/mainContent/TopControls';
@@ -252,119 +252,100 @@ const StudentPaymentsInterface = () => {
         <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center px-4">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading students...</p>
+            <p className="mt-4 text-gray-600">Loading initial data...</p>
           </div>
         </div>
       );
     }
 
-    if (error) {
-      return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center px-4">
-          <div className="text-center text-red-600 max-w-md">
-            <p className="mb-4">{error}</p>
-            <button 
-              onClick={() => window.location.reload()} 
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-            >
-              Retry
-            </button>
-          </div>
-        </div>
-      );
-    }
-  
+    const sidebarContent = (
+      <StudentSidebar
+        students={students}
+        selectedStudent={selectedStudent}
+        setSelectedStudent={setSelectedStudent}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        onClose={() => setSidebarOpen(false)}
+      />
+    );
+
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-        <Header onMenuClick={() => setSidebarOpen(!isSidebarOpen)} />
-        
-        <div className="flex h-[calc(100vh-80px)]">
-          <StudentSidebar
-            students={students}
+      <PageLayout
+        sidebar={sidebarContent}
+        isSidebarOpen={isSidebarOpen}
+        setSidebarOpen={setSidebarOpen}
+        pageTitle="Student Payments"
+      >
+        <div className="space-y-6">
+          <TopControls
+            periods={periods}
+            selectedPeriod={selectedPeriod}
+            setSelectedPeriod={setSelectedPeriod}
+            onOpenPaymentRequest={() => toggleModal('paymentRequest', true)}
             selectedStudent={selectedStudent}
-            searchTerm={searchTerm}
-            onSearchChange={setSearchTerm}
-            onStudentSelect={(student) => {
-              setSelectedStudent(student);
-              setSidebarOpen(false); // Close sidebar on student selection
-            }}
-            isOpen={isSidebarOpen}
           />
-  
-          <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
-            {selectedStudent ? (
-              <div className="space-y-6">
-                <TopControls
-                  selectedPeriod={selectedPeriod}
-                  onPeriodChange={setSelectedPeriod}
-                  onPaymentRequest={() => toggleModal('paymentRequest', true)}
-                  periods={periods}
-                />
-                
-                <StudentInfoCard student={selectedStudent} />
-                
-                {loading ? (
-                  <div className="text-center py-8">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-                    <p className="mt-4 text-gray-600">Loading fees...</p>
-                  </div>
-                ) : (
-                  <div className="space-y-6">
+          
+          {selectedStudent ? (
+            <>
+              <StudentInfoCard student={selectedStudent} />
+              
+              {loading ? (
+                <div className="text-center py-12">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto"></div>
+                  <p className="mt-4 text-gray-600">Loading student fees...</p>
+                </div>
+              ) : error ? (
+                <div className="bg-red-50 text-red-700 p-4 rounded-lg shadow-md">
+                  <p>{error}</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  <div className="lg:col-span-2">
                     <PaymentTypesTable
-                      paymentTypes={studentFees}
+                      fees={studentFees}
                       onAddPayment={handleAddPayment}
                       onViewHistory={handleViewHistory}
                     />
-                    
-                    <div className="w-full lg:w-2/3 xl:w-1/2">
-                      <TodaysPayments 
-                        payments={todaysPayments} 
-                        student={selectedStudent} 
-                      />
-                    </div>
                   </div>
-                )}
-              </div>
-            ) : (
-              <EmptyState />
-            )}
-          </main>
+                  <div>
+                    <TodaysPayments
+                      payments={todaysPayments}
+                      studentName={selectedStudent.name}
+                    />
+                  </div>
+                </div>
+              )}
+            </>
+          ) : (
+            <EmptyState
+              message="No student selected"
+              description="Please select a student from the sidebar to view their payment information."
+            />
+          )}
         </div>
-  
-        {/* Overlay for mobile sidebar */}
-        {isSidebarOpen && (
-          <div 
-            className="fixed inset-0 bg-black bg-opacity-50 z-10 md:hidden"
-            onClick={() => setSidebarOpen(false)}
-          ></div>
-        )}
 
         {/* Modals */}
         <PaymentRequestModal
           isOpen={modals.paymentRequest}
           onClose={() => toggleModal('paymentRequest', false)}
-          selectedStudent={selectedStudent}
-          periods={periods}
-          onSuccess={refreshStudentFees}
+          student={selectedStudent}
         />
-        
         <AddPaymentModal
           isOpen={modals.addPayment}
           onClose={() => toggleModal('addPayment', false)}
-          selectedPaymentType={selectedPaymentType}
-          selectedStudent={selectedStudent}
-          selectedPeriod={selectedPeriod}
+          paymentType={selectedPaymentType}
+          student={selectedStudent}
+          academicPeriod={selectedPeriod}
           onSuccess={refreshStudentFees}
         />
-        
         <PaymentHistoryModal
           isOpen={modals.paymentHistory}
           onClose={() => toggleModal('paymentHistory', false)}
-          selectedPaymentType={selectedPaymentType}
-          selectedStudent={selectedStudent}
-          selectedPeriod={selectedPeriod}
+          paymentType={selectedPaymentType}
+          student={selectedStudent}
+          academicPeriod={selectedPeriod}
         />
-      </div>
+      </PageLayout>
     );
   };
   

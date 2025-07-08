@@ -41,7 +41,24 @@ function Login({ onLoginSuccess }) {
       }
     } catch (error) {
       console.error('Login failed:', error);
-      setError(error.response?.data?.detail || 'Login failed. Please try again.');
+
+      if (error.response) {
+        // The server responded with a status code outside the 2xx range
+        const status = error.response.status;
+        if (status === 400 || status === 401 || status === 422) {
+          setError('Invalid username or password. Please try again.');
+        } else if (status >= 500) {
+          setError('An internal server error occurred. Please try again later.');
+        } else {
+          setError('An unexpected error occurred. Please try again.');
+        }
+      } else if (error.request) {
+        // The request was made but no response was received
+        setError('The server is not responding. Please check your network connection or try again later.');
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        setError('An unexpected error occurred. Please try again.');
+      }
     } finally {
       setLoading(false);
     }

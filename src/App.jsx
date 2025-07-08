@@ -5,6 +5,7 @@ import StudentPaymentsInterface from './pages/StudentPaymentsInterface'
 import Reports from './pages/Reports'
 import Login from './pages/Login'
 import { getCurrentUser } from './services/api';
+import { LogOut, LayoutDashboard, CreditCard, BarChart } from 'lucide-react';
 
 // Navigation component with responsive design
 function TopNav({ user, onLogout }) {
@@ -34,27 +35,30 @@ function TopNav({ user, onLogout }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-2">
             {user.role === 'admin' && (
               <button 
                 onClick={() => navigate('/admin')} 
-                className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50 transition-colors duration-200"
+                className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-100 transition-colors duration-200"
               >
-                Admin Dashboard
+                <LayoutDashboard className="w-5 h-5" />
+                <span>Admin</span>
               </button>
             )}
             <button 
               onClick={() => navigate('/student')} 
-              className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50 transition-colors duration-200"
+              className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-100 transition-colors duration-200"
             >
-              Student Payments
+              <CreditCard className="w-5 h-5" />
+              <span>Payments</span>
             </button>
             {(user.role === 'admin' || user.role === 'manager') && (
               <button 
                 onClick={() => navigate('/reports')} 
-                className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50 transition-colors duration-200"
+                className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-100 transition-colors duration-200"
               >
-                Reports
+                <BarChart className="w-5 h-5" />
+                <span>Reports</span>
               </button>
             )}
           </div>
@@ -68,9 +72,10 @@ function TopNav({ user, onLogout }) {
             </div>
             <button 
               onClick={handleLogout}
-              className="text-sm text-red-600 hover:text-red-800 font-medium px-3 py-2 rounded-md hover:bg-red-50 transition-colors duration-200"
+              className="p-2 rounded-full text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors duration-200"
+              title="Logout"
             >
-              Logout
+              <LogOut className="w-5 h-5" />
             </button>
           </div>
 
@@ -115,9 +120,10 @@ function TopNav({ user, onLogout }) {
                 navigate('/admin');
                 setIsMobileMenuOpen(false);
               }} 
-              className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-100 transition-colors duration-200"
+              className="flex items-center gap-3 w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-100 transition-colors duration-200"
             >
-              Admin Dashboard
+              <LayoutDashboard className="w-6 h-6" />
+              <span>Admin Dashboard</span>
             </button>
           )}
           <button 
@@ -125,9 +131,10 @@ function TopNav({ user, onLogout }) {
               navigate('/student');
               setIsMobileMenuOpen(false);
             }} 
-            className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-100 transition-colors duration-200"
+            className="flex items-center gap-3 w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-100 transition-colors duration-200"
           >
-            Student Payments
+            <CreditCard className="w-6 h-6" />
+            <span>Student Payments</span>
           </button>
           {(user.role === 'admin' || user.role === 'manager') && (
             <button 
@@ -135,9 +142,10 @@ function TopNav({ user, onLogout }) {
                 navigate('/reports');
                 setIsMobileMenuOpen(false);
               }} 
-              className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-100 transition-colors duration-200"
+              className="flex items-center gap-3 w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-100 transition-colors duration-200"
             >
-              Reports
+              <BarChart className="w-6 h-6" />
+              <span>Reports</span>
             </button>
           )}
           
@@ -153,9 +161,10 @@ function TopNav({ user, onLogout }) {
                 handleLogout();
                 setIsMobileMenuOpen(false);
               }}
-              className="w-full text-left text-sm text-red-600 hover:text-red-800 font-medium px-3 py-2 rounded-md hover:bg-red-50 transition-colors duration-200"
+              className="w-full flex items-center gap-3 text-left text-sm text-red-600 hover:text-red-800 font-medium px-3 py-2 rounded-md hover:bg-red-50 transition-colors duration-200"
             >
-              Logout
+              <LogOut className="w-5 h-5" />
+              <span>Logout</span>
             </button>
           </div>
         </div>

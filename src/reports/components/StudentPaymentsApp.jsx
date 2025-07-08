@@ -2,23 +2,24 @@ import React, { useState } from 'react';
 import ReportTabs from './ReportTabs';
 import IndividualReport from './IndividualReport';
 import AggregatedReport from './AggregatedReport';
-import Header from './ReportHeader';
 
 const StudentPaymentsApp = () => {
   const [activeTab, setActiveTab] = useState('individual');
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="grid grid-cols-1 gap-6">
-          <div className="w-full">
-            <div className="bg-white rounded-lg shadow-sm mb-6">
-              <ReportTabs activeTab={activeTab} setActiveTab={setActiveTab} />
-              {activeTab === 'individual' ? <IndividualReport /> : <AggregatedReport />}
-            </div>
-          </div>
+    <div className="space-y-6">
+      <div className="bg-white rounded-lg shadow-md">
+        <div className="p-4 border-b">
+          <h1 className="text-2xl font-bold text-gray-800">Financial Reports</h1>
+          <p className="mt-1 text-sm text-gray-600">
+            View and export individual or aggregated payment reports.
+          </p>
         </div>
+        <ReportTabs activeTab={activeTab} setActiveTab={setActiveTab} />
+      </div>
+
+      <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
+        {activeTab === 'individual' ? <IndividualReport /> : <AggregatedReport />}
       </div>
     </div>
   );
