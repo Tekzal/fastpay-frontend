@@ -4,6 +4,9 @@ import AdminDashboard from './pages/AdminDashboard'
 import StudentPaymentsInterface from './pages/StudentPaymentsInterface'
 import Reports from './pages/Reports'
 import Login from './pages/Login'
+import Signup from './pages/Signup';
+import ForgotPassword from './pages/ForgotPassword';
+import SuperUserDashboard from './pages/SuperUserDashboard';
 import { getCurrentUser } from './services/api';
 import { LogOut, LayoutDashboard, CreditCard, BarChart } from 'lucide-react';
 
@@ -234,8 +237,16 @@ function App() {
           <Route path="/login" element={
             user ? <Navigate to="/" replace /> : <Login onLoginSuccess={handleLoginSuccess} />
           } />
+          {/* Signup route */}
+          <Route path="/signup" element={
+            user ? <Navigate to="/" replace /> : <Signup />
+          } />
+          {/* Forgot Password route */}
+          <Route path="/forgot-password" element={
+            user ? <Navigate to="/" replace /> : <ForgotPassword />
+          } />
           
-          {/* Protected routes */}
+          {/* Default route - redirect to login if not authenticated */}
           <Route path="/" element={
             user ? (
               user.role === 'admin' ? (
@@ -274,6 +285,9 @@ function App() {
               <Navigate to="/login" replace />
             )
           } />
+
+          {/* Super User Dashboard */}
+          <Route path="/superuser-dashboard" element={<SuperUserDashboard />} />
 
           {/* Catch all */}
           <Route path="*" element={

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Check Test</title>
+</head>
+<body>
+    <h1>Email Check Test</h1>
+    <p>This is a simple test to verify the email check functionality.</p>
+    <p>Open your browser console and go to the signup page to test the email check.</p>
+    
+    <h2>Expected Behavior:</h2>
+    <ul>
+        <li>Type an email in Step 2 of the signup form</li>
+        <li>Should see console logs showing the API request</li>
+        <li>Should see visual feedback (green/red border, status message)</li>
+        <li>For "clement.quoda@gmail.com" should show "Email is already taken"</li>
+        <li>For new emails should show "Email is available"</li>
+    </ul>
+    
+    <h2>Common Issues:</h2>
+    <ul>
+        <li><strong>405 Error:</strong> Backend doesn't accept GET requests</li>
+        <li><strong>404 Error:</strong> Endpoint doesn't exist</li>
+        <li><strong>422 Error:</strong> Wrong request format</li>
+        <li><strong>Network Error:</strong> Backend server not running</li>
+    </ul>
+    
+    <h2>Debug Steps:</h2>
+    <ol>
+        <li>Check browser console for error messages</li>
+        <li>Verify backend server is running</li>
+        <li>Test endpoint directly: <code>GET /auth/check-email?email=test@test.com</code></li>
+        <li>Check API base URL configuration</li>
+    </ol>
+</body>
+</html> 

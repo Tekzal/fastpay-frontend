@@ -154,46 +154,48 @@ const MainContent = ({
   };
 
   const handleAddSubmit = async (formData) => {
+    // Remove organisation_id if present in formData
+    const { organisation_id, ...safeFormData } = formData;
     try {
       switch (activeSection) {
         case 'Academic Years':
-          await createAcademicYear(formData);
+          await createAcademicYear(safeFormData);
           if (triggerRefreshAcademicYears) triggerRefreshAcademicYears();
           break;
         case 'Students':
-          await createStudent(formData);
+          await createStudent(safeFormData);
           if (triggerRefreshStudents) triggerRefreshStudents();
           break;
         case 'Departments':
-          await createDepartment(formData);
+          await createDepartment(safeFormData);
           if (triggerRefreshDepartments) triggerRefreshDepartments();
           break;
         case 'Classes':
-          await createClass(formData);
+          await createClass(safeFormData);
           if (triggerRefreshClasses) triggerRefreshClasses();
           break;
         case 'Academic Periods':
-          await createAcademicPeriod(formData);
+          await createAcademicPeriod(safeFormData);
           if (triggerRefreshAcademicPeriods) triggerRefreshAcademicPeriods();
           break;
         case 'School Fees':
-          await createSchoolFee(formData);
+          await createSchoolFee(safeFormData);
           if (triggerRefreshSchoolFees) triggerRefreshSchoolFees();
           break;
         case 'Exam Fees':
-          await createExamFee(formData);
+          await createExamFee(safeFormData);
           if (triggerRefreshExamFees) triggerRefreshExamFees();
           break;
         case 'Other Bills':
-          await createOtherBill(formData);
+          await createOtherBill(safeFormData);
           if (triggerRefreshOtherBills) triggerRefreshOtherBills();
           break;
         case 'Payments':
-          await createPayment(formData);
+          await createPayment(safeFormData);
           if (triggerRefreshPayments) triggerRefreshPayments();
           break;
         case 'Users':
-          await createUser(formData);
+          await createUser(safeFormData);
           if (triggerRefreshUsers) triggerRefreshUsers();
           break;
         default:

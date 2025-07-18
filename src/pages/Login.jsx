@@ -9,6 +9,7 @@ function Login({ onLoginSuccess }) {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -64,6 +65,16 @@ function Login({ onLoginSuccess }) {
     }
   };
 
+  const handleSignupClick = (e) => {
+    e.preventDefault();
+    navigate('/signup');
+  };
+
+  const handleForgotPasswordClick = (e) => {
+    e.preventDefault();
+    navigate('/forgot-password');
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-blue-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
@@ -103,17 +114,45 @@ function Login({ onLoginSuccess }) {
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
                 Password
               </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                className="appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-colors duration-200"
-                placeholder="Enter your password"
-                value={credentials.password}
-                onChange={handleChange}
-                disabled={loading}
-              />
+              <div className="relative">
+                <input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  required
+                  className="appearance-none block w-full px-3 py-3 pr-12 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-colors duration-200"
+                  placeholder="Enter your password"
+                  value={credentials.password}
+                  onChange={handleChange}
+                  disabled={loading}
+                />
+                <button
+                  type="button"
+                  tabIndex={-1}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 bg-transparent rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-400 z-20"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-4.477-10-10 0-1.657.402-3.22 1.125-4.575M15 12a3 3 0 11-6 0 3 3 0 016 0zm6.875-4.575A9.956 9.956 0 0122 9c0 5.523-4.477 10-10 10a9.956 9.956 0 01-4.575-1.125M3 3l18 18" />
+                    </svg>
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm7-2c-1.657-4-6-7-10-7S3.657 6 2 10c1.657 4 6 7 10 7s8.343-3 10-7z" />
+                    </svg>
+                  )}
+                </button>
+              </div>
+            </div>
+            <div className="flex justify-end mt-1">
+              <a
+                href="#"
+                onClick={handleForgotPasswordClick}
+                className="text-sm text-indigo-600 hover:text-indigo-800 hover:underline focus:outline-none focus:underline transition-colors font-medium"
+              >
+                Forgot password?
+              </a>
             </div>
           </div>
 
@@ -149,10 +188,20 @@ function Login({ onLoginSuccess }) {
             </button>
           </div>
         </form>
+        <div className="text-center mt-4">
+          <span className="text-sm text-gray-600">Don't have an account? </span>
+          <a
+            href="#"
+            onClick={handleSignupClick}
+            className="text-sm text-indigo-600 hover:text-indigo-800 hover:underline focus:outline-none focus:underline transition-colors font-medium"
+          >
+            Sign up
+          </a>
+        </div>
 
         <div className="text-center">
           <p className="text-xs text-gray-500">
-            FastPay Student Management System
+            Fastpay School Payment System
           </p>
         </div>
       </div>

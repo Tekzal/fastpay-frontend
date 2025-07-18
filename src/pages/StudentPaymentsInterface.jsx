@@ -38,7 +38,7 @@ const StudentPaymentsInterface = () => {
           setLoading(true);
           const data = await getStudents();
           const studentsWithClass = await Promise.all(data.map(async (student) => {
-            if (!student.class) {
+            if (!student.class_id) {
               // Handle students without a class
               return {
                 ...student,
@@ -47,7 +47,7 @@ const StudentPaymentsInterface = () => {
                 studentId: student.id
               };
             }
-            const classDetails = await getClassDetails(student.class);
+            const classDetails = await getClassDetails(student.class_id);
             return {
               ...student,
               class_name: classDetails.name,
@@ -262,9 +262,10 @@ const StudentPaymentsInterface = () => {
       <StudentSidebar
         students={students}
         selectedStudent={selectedStudent}
-        setSelectedStudent={setSelectedStudent}
         searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
+        onSearchChange={setSearchTerm}
+        onStudentSelect={setSelectedStudent}
+        isOpen={isSidebarOpen}
         onClose={() => setSidebarOpen(false)}
       />
     );
@@ -280,9 +281,8 @@ const StudentPaymentsInterface = () => {
           <TopControls
             periods={periods}
             selectedPeriod={selectedPeriod}
-            setSelectedPeriod={setSelectedPeriod}
-            onOpenPaymentRequest={() => toggleModal('paymentRequest', true)}
-            selectedStudent={selectedStudent}
+            onPeriodChange={setSelectedPeriod}
+            onPaymentRequest={() => toggleModal('paymentRequest', true)}
           />
           
           {selectedStudent ? (
@@ -302,7 +302,7 @@ const StudentPaymentsInterface = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                   <div className="lg:col-span-2">
                     <PaymentTypesTable
-                      fees={studentFees}
+                      paymentTypes={studentFees}
                       onAddPayment={handleAddPayment}
                       onViewHistory={handleViewHistory}
                     />
@@ -328,7 +328,9 @@ const StudentPaymentsInterface = () => {
         <PaymentRequestModal
           isOpen={modals.paymentRequest}
           onClose={() => toggleModal('paymentRequest', false)}
-          student={selectedStudent}
+          selectedStudent={selectedStudent}
+          periods={periods}
+          onSuccess={refreshStudentFees}
         />
         <AddPaymentModal
           isOpen={modals.addPayment}

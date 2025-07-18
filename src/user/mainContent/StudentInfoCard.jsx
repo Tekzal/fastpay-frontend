@@ -13,7 +13,7 @@ const StudentInfoCard = ({ student }) => {
         <div className="flex-1 min-w-0">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-1">{student.name}</h2>
           <p className="text-sm sm:text-base text-gray-600">
-            Class: {student.class} | Student ID: {student.studentId}
+            Class: {student.class_name} | Student ID: {student.studentId}
           </p>
         </div>
       </div>

@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+
+// Debug: Log the API base URL
+console.log('API Base URL:', API_BASE_URL);
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -743,6 +746,92 @@ export const logout = () => {
   // Force page reload to clear any in-memory state
   // This ensures no cached data remains
   window.location.href = '/login';
+};
+
+// Check email availability
+export const checkEmailAvailability = async (email) => {
+  try {
+    console.log('Making email check request to:', `${API_BASE_URL}/auth/check-email?email=${email}`);
+    
+    // Use GET request with query parameters
+    const response = await api.get('/auth/check-email', { 
+      params: { email } 
+    });
+    
+    console.log('Email check successful:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error checking email availability:', error);
+    console.error('Full error details:', {
+      message: error.message,
+      status: error.response?.status,
+      statusText: error.response?.statusText,
+      url: error.config?.url,
+      baseURL: API_BASE_URL
+    });
+    throw error;
+  }
+};
+
+// Request offer code
+export const requestOfferCode = async (email) => {
+  try {
+    console.log('Requesting offer code for email:', email);
+    console.log('Making request to:', `${API_BASE_URL}/auth/request-offer-code?email=${email}`);
+    
+    // Send email as query parameter instead of request body
+    const response = await api.post('/auth/request-offer-code', null, { 
+      params: { email } 
+    });
+    console.log('Offer code request successful:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error requesting offer code:', error);
+    console.error('Full error details:', {
+      message: error.message,
+      status: error.response?.status,
+      statusText: error.response?.statusText,
+      data: error.response?.data,
+      url: error.config?.url
+    });
+    throw error;
+  }
+};
+
+// Forgot password
+export const forgotPassword = async (email) => {
+  try {
+    const response = await api.post('/auth/forgot-password', { email });
+    return response.data;
+  } catch (error) {
+    console.error('Error requesting password reset:', error);
+    throw error;
+  }
+};
+
+// Reset password
+export const resetPassword = async (token, newPassword) => {
+  try {
+    const response = await api.post('/auth/reset-password', { 
+      token, 
+      new_password: newPassword 
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error resetting password:', error);
+    throw error;
+  }
+};
+
+// Signup
+export const signup = async (signupData) => {
+  try {
+    const response = await api.post('/auth/signup', signupData);
+    return response.data;
+  } catch (error) {
+    console.error('Error during signup:', error);
+    throw error;
+  }
 };
 
 export default api; 

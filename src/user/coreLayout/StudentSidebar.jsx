@@ -8,7 +8,7 @@ const StudentSidebar = ({ students, selectedStudent, searchTerm, onSearchChange,
     const lowerSearchTerm = (searchTerm || '').toLowerCase();
     const filteredStudents = (students || []).filter(student =>
       (student?.name?.toLowerCase() || '').includes(lowerSearchTerm) ||
-      (student?.studentId?.toLowerCase() || '').includes(lowerSearchTerm)
+      (String(student?.studentId || '').toLowerCase()).includes(lowerSearchTerm)
     );
   
     return (
